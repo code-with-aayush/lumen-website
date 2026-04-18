@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ── */
+:root {
+  color-scheme: dark;
+  --ink: #0d0b09;
+  --ink-deep: #080605;
+  --charcoal: #181410;
+  --charcoal-soft: #221d17;
+  --bone: #ede4d2;
+  --bone-soft: #dacfba;
+  --stone: #938677;
+  --stone-soft: #b9ae9d;
+  --champagne: #d4b173;
+  --champagne-deep: #a68347;
+  --champagne-dim: rgba(212, 177, 115, 0.25);
+  --surface: #f2ebdb;
+  --surface-2: #e6dcc5;
+  --surface-ink: #2a2116;
+  --surface-stone: #6e5f4e;
+  --surface-rule: rgba(42, 33, 22, 0.14);
+  --rule: rgba(237, 228, 210, 0.08);
+  --feature: #0d0b09;
+  --feature-ink: #ede4d2;
+  --feature-stone: #938677;
+  --feature-rule: rgba(237, 228, 210, 0.08);
+}
+
+/* ── Base reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Film grain overlay — luxury texture ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: var(--champagne);
+  color: var(--ink-deep);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--charcoal-soft);
+  border-radius: 2px;
+}
+
+/* ── Focus ── */
+:focus-visible {
+  outline: 2px solid var(--champagne);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Typography base ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+/* ── Container ── */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+/* ── Ambient glow utility ── */
+.glow-champagne {
+  position: relative;
+}
+.glow-champagne::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(212, 177, 115, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
