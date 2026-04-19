@@ -54,20 +54,35 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-xs tracking-widest uppercase font-sans transition-colors",
+                  "group relative text-xs tracking-widest uppercase font-sans transition-colors py-2",
                   pathname === link.href
                     ? "text-champagne"
                     : "text-stone hover:text-bone"
                 )}
               >
-                {link.label}
+                <span>{link.label}</span>
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute -bottom-0.5 left-0 right-0 h-px bg-champagne origin-left transition-transform duration-500 ease-out",
+                    pathname === link.href
+                      ? "scale-x-100"
+                      : "scale-x-0 group-hover:scale-x-100"
+                  )}
+                />
               </Link>
             ))}
             <Link
               href="/book"
-              className="text-xs tracking-widest uppercase font-sans text-ink-deep bg-champagne px-6 py-3 hover:bg-champagne-deep transition-colors"
+              className="group/book relative text-xs tracking-widest uppercase font-sans text-ink-deep bg-champagne px-6 py-3 transition-colors duration-500 overflow-hidden"
             >
-              Book
+              <span className="relative z-10 transition-colors duration-500 group-hover/book:text-bone">
+                Book
+              </span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 bg-ink-deep transform translate-y-full group-hover/book:translate-y-0 transition-transform duration-500 ease-out"
+              />
             </Link>
           </div>
 

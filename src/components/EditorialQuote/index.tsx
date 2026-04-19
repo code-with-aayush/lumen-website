@@ -1,9 +1,29 @@
 // src/components/EditorialQuote/index.tsx
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { RevealOnScroll } from "@/components/RevealOnScroll";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export function EditorialQuote() {
+  const ref = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const quoteScale = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [0.96, 1, 0.98]
+  );
+
   return (
     <section
+      ref={ref}
       className="relative py-32 md:py-48 bg-feature overflow-hidden"
       aria-label="Editorial quote"
     >
@@ -17,7 +37,10 @@ export function EditorialQuote() {
         }}
       />
 
-      <div className="container max-w-4xl mx-auto text-center relative z-10">
+      <motion.div
+        style={reducedMotion ? {} : { scale: quoteScale }}
+        className="container max-w-4xl mx-auto text-center relative z-10"
+      >
         <RevealOnScroll>
           <div
             aria-hidden="true"
@@ -39,7 +62,7 @@ export function EditorialQuote() {
             className="w-px h-12 bg-gradient-to-b from-transparent via-champagne/30 to-transparent mx-auto mt-12"
           />
         </RevealOnScroll>
-      </div>
+      </motion.div>
     </section>
   );
 }

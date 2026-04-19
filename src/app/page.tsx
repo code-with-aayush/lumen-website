@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/Hero";
 import { ValueStrip } from "@/components/ValueStrip";
 import { TrustStrip } from "@/components/TrustStrip";
-import { TreatmentsBento } from "@/components/TreatmentsBento";
+import { TreatmentsStack } from "@/components/TreatmentsStack";
 import { MethodSection } from "@/components/MethodSection";
 import { TeamGrid } from "@/components/TeamGrid";
 import { EditorialQuote } from "@/components/EditorialQuote";
@@ -35,7 +35,7 @@ export default function HomePage() {
       <Hero />
       <ValueStrip />
       <TrustStrip />
-      <TreatmentsBento />
+      <TreatmentsStack />
       <SectionDivider />
       <MethodSection />
       <TeamGrid />

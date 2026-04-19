@@ -23,9 +23,19 @@ export function MembershipTeaser() {
               </p>
               <Link
                 href="/membership"
-                className="inline-block text-xs tracking-widest uppercase font-sans text-surface-ink border border-surface-rule px-8 py-4 hover:bg-surface-ink hover:text-surface transition-colors"
+                className="group/btn relative inline-flex items-center gap-3 text-xs tracking-widest uppercase font-sans text-surface-ink border border-surface-rule px-8 py-4 overflow-hidden transition-colors duration-500"
               >
-                Learn more
+                <span className="relative z-10 transition-colors duration-500 group-hover/btn:text-surface">
+                  Learn more
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="relative z-10 inline-block w-4 h-px bg-current transition-all duration-500 group-hover/btn:w-8 group-hover/btn:text-surface"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-surface-ink transform translate-x-[-101%] group-hover/btn:translate-x-0 transition-transform duration-500 ease-out"
+                />
               </Link>
             </div>
           </RevealOnScroll>
@@ -35,9 +45,13 @@ export function MembershipTeaser() {
               {MEMBERSHIP_BENEFITS.map((benefit, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-4 text-surface-stone font-sans text-sm leading-relaxed pb-4 border-b border-surface-rule last:border-0"
+                  className="group/benefit flex items-start gap-4 text-surface-stone font-sans text-sm leading-relaxed pb-4 border-b border-surface-rule last:border-0 hover:text-surface-ink transition-colors duration-300"
                 >
-                  <span className="text-champagne mt-0.5 shrink-0" aria-hidden="true">
+                  <span
+                    className="text-champagne mt-0.5 shrink-0 transition-all duration-500 group-hover/benefit:w-8"
+                    aria-hidden="true"
+                    style={{ display: "inline-block", width: "1rem" }}
+                  >
                     —
                   </span>
                   {benefit}

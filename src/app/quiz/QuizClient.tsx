@@ -289,9 +289,9 @@ export function QuizClient() {
               <p className="text-[11px] tracking-[0.2em] uppercase text-champagne font-sans mb-4">
                 Your personalized recommendation
               </p>
-              <h1 className="font-serif text-3xl md:text-5xl text-bone font-light mb-6">
+              <h2 className="font-serif text-3xl md:text-5xl text-bone font-light mb-6">
                 Based on what you told us.
-              </h1>
+              </h2>
               <p className="text-stone font-sans text-base leading-relaxed mb-12 max-w-xl">
                 {recommendation?.summary}
               </p>

@@ -1,4 +1,5 @@
 // src/lib/logger.ts
+/* eslint-disable no-console -- the logger is the single sanctioned wrapper around console */
 const isProd = process.env.NODE_ENV === "production";
 
 export const logger = {

@@ -1,11 +1,14 @@
 // src/app/contact/ContactForm.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { CheckCircle } from "lucide-react";
+import { Turnstile } from "@/components/Turnstile";
+import { readUtm } from "@/lib/utm";
+import { track } from "@/components/Analytics";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required").max(100, "Name is too long"),
@@ -45,9 +48,13 @@ const SERVICE_OPTIONS = [
   "Other",
 ];
 
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
+  const [startedTracked, setStartedTracked] = useState(false);
 
   const {
     register,
@@ -57,13 +64,35 @@ export function ContactForm() {
     resolver: zodResolver(contactSchema),
   });
 
+  useEffect(() => {
+    track("form_view", { form: "contact" });
+  }, []);
+
+  function onFirstInteract() {
+    if (startedTracked) return;
+    setStartedTracked(true);
+    track("form_start", { form: "contact" });
+  }
+
   const onSubmit = async (data: ContactFormData) => {
     setServerError(null);
+
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setServerError("Please complete the verification challenge.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          turnstileToken: turnstileToken || undefined,
+          utm: readUtm(),
+          referer:
+            typeof document !== "undefined" ? document.referrer : undefined,
+        }),
       });
 
       if (!res.ok) {
@@ -75,6 +104,7 @@ export function ContactForm() {
         return;
       }
 
+      track("form_submit", { form: "contact", service: data.service || "none" });
       setSubmitted(true);
     } catch {
       setServerError(
@@ -105,6 +135,7 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
+      onFocus={onFirstInteract}
       noValidate
       aria-label="Contact form"
     >
@@ -260,6 +291,16 @@ export function ContactForm() {
             </p>
           )}
         </div>
+
+        {/* Turnstile — only rendered when a site key is configured */}
+        {TURNSTILE_SITE_KEY && (
+          <div>
+            <Turnstile
+              siteKey={TURNSTILE_SITE_KEY}
+              onToken={setTurnstileToken}
+            />
+          </div>
+        )}
 
         {/* Server error */}
         {serverError && (

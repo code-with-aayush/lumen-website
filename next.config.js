@@ -9,16 +9,23 @@ const nextConfig = {
     ],
   },
   async headers() {
+    // Next.js currently injects inline <script> and <style> so 'unsafe-inline'
+    // is unavoidable on App Router without nonces. 'unsafe-eval' is dropped
+    // (we don't ship eval-based libs). Chatbase entries dropped — we ship a
+    // first-party chat widget, not the chatbase embed.
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.chatbase.co",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://images.unsplash.com https://www.chatbase.co",
+      "img-src 'self' data: blob: https://images.unsplash.com https://www.google-analytics.com",
       "font-src 'self'",
-      "connect-src 'self' https://www.chatbase.co",
-      "frame-src https://cal.com https://www.chatbase.co",
+      "connect-src 'self' https://api.resend.com https://www.google-analytics.com https://*.analytics.google.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://challenges.cloudflare.com",
+      "worker-src 'self' blob:",
+      "frame-src https://cal.com https://challenges.cloudflare.com",
       "object-src 'none'",
       "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
     ].join('; ');
 
     return [
@@ -32,7 +39,7 @@ const nextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
-          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
         ],
       },
     ];
